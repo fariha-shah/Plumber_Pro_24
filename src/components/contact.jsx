@@ -38,52 +38,62 @@ export default function Contact() {
   return (
     <div className="min-h-screen bg-white">
       {/* ── PAGE HERO BANNER ── */}
-      <div className="bg-[#2563EB] py-16 px-4 md:px-10 text-center">
-        <p
-          className="text-[#ebeef6] text-xs font-bold tracking-widest
-          uppercase mb-3"
-        >
-          Get In Touch
-        </p>
-        <h1
-          className="font-black font-poppins text-white uppercase
-          text-3xl md:text-5xl mb-4"
-        >
-          CONTACT US
-        </h1>
-        <p className="text-[#eceff4] text-sm max-w-xl mx-auto">
-          Have a plumbing emergency or need a quote? Get in touch with our team
-          and we'll respond as quickly as possible.
-        </p>
+      {/* ── PAGE HERO (LOGIN STYLE) ── */}
+      <div className="min-h-[100px] flex items-center justify-center px-4 py-10 bg-white">
+        <div className="w-full max-w-6xl rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row">
+          {/* LEFT GRADIENT SIDE (like login page) */}
+          <div className="hidden md:flex w-[40%] bg-gradient-to-br from-[#2563EB] via-[#3B82F6] to-[#60A5FA] relative">
+            <div className="absolute -left-24 top-0 w-64 h-64 rotate-45 bg-white/10" />
+            <div className="absolute -left-20 bottom-0 w-64 h-64 rotate-45 bg-pink-400/20" />
 
-        {/* Emergency Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mt-8">
-          <a
-            href="tel:+18005551234"
-            className="flex items-center gap-2 bg-[#DC2626] text-white
-              px-8 py-3 rounded-lg font-bold text-sm hover:bg-red-700
-              transition shadow-lg pulse-emergency"
-          >
-            <AlertTriangle size={16} />
-            Emergency Call
-          </a>
-          <a
-            href="https://wa.me/18005551234"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-[#10B981] text-white
-              px-8 py-3 rounded-lg font-bold text-sm hover:bg-green-600
-              transition shadow-lg"
-          >
-            <Phone size={16} />
-            WhatsApp Us
-          </a>
+            <div className="relative z-10 flex flex-col justify-center items-center text-center px-6">
+              <p className="text-white/80 text-[11px] font-bold tracking-widest uppercase">
+                Get In Touch
+              </p>
+
+              <h1 className="text-white text-3xl font-black mt-2">
+                CONTACT US
+              </h1>
+
+              <p className="text-blue-100 text-[11px] mt-2 leading-snug">
+                We are available 24/7 for emergencies and support.
+              </p>
+            </div>
+          </div>
+
+          {/* RIGHT SIDE */}
+          <div className="flex-1 bg-white p-6 md:p-10 flex flex-col justify-center text-center md:text-left">
+            <h2 className="text-xl md:text-2xl font-black text-[#0F172A]">
+              Need Help?
+            </h2>
+
+            <p className="text-xs text-[#64748B] mt-1">
+              Plumbing emergency or quotation — we’re one click away.
+            </p>
+
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 mt-5 justify-center md:justify-start">
+              <a
+                href="tel:+18005551234"
+                className="bg-[#DC2626] text-white px-5 py-2 rounded-full text-xs font-bold flex items-center justify-center gap-2 hover:bg-red-700 transition"
+              >
+                Emergency Call
+              </a>
+
+              <a
+                href="https://wa.me/18005551234"
+                className="bg-[#10B981] text-white px-5 py-2 rounded-full text-xs font-bold flex items-center justify-center gap-2 hover:bg-green-600 transition"
+              >
+                WhatsApp
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* ── CONTACT INFO CARDS ── */}
       <div className="max-w-7xl mx-auto px-4 md:px-10 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {[
             {
               icon: <Mail size={28} className="text-[#2563EB]" />,
@@ -133,7 +143,7 @@ export default function Contact() {
         </div>
 
         {/* ── BUSINESS HOURS + FORM + MAP ── */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-16">
+        <div className="grid lg:grid-cols-2 gap-8 mb-8">
           {/* ── LEFT - Form ── */}
           <div className="bg-[#F1F5F9] rounded-3xl p-8">
             <h2

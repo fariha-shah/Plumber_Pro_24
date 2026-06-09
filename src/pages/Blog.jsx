@@ -1,18 +1,14 @@
-// Blog Page - List of plumbing tips and articles
-// Author: Wajeeha Habib | TechNexus Internship
-
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Clock, ArrowRight, User } from 'lucide-react';
 import heroImg from '../assets/hero.png';
 
-// Dummy blog posts data
-// TODO: Replace with GET /api/blog when backend is ready
+// ── BLOG DATA ──
 const blogPosts = [
   {
     id: 1,
     title: '10 Signs You Need Emergency Plumbing Service',
-    excerpt:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.',
+    excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
     category: 'Emergency',
     author: 'John Smith',
     date: 'May 15, 2026',
@@ -22,8 +18,7 @@ const blogPosts = [
   {
     id: 2,
     title: 'How to Prevent Drain Blockages in Your Home',
-    excerpt:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.',
+    excerpt: 'Lorem ipsum dolor sit amet...',
     category: 'Tips',
     author: 'Mike Johnson',
     date: 'May 12, 2026',
@@ -33,8 +28,7 @@ const blogPosts = [
   {
     id: 3,
     title: 'Water Heater Installation: What You Need to Know',
-    excerpt:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.',
+    excerpt: 'Lorem ipsum dolor sit amet...',
     category: 'Installation',
     author: 'David Lee',
     date: 'May 10, 2026',
@@ -44,8 +38,7 @@ const blogPosts = [
   {
     id: 4,
     title: 'DIY Plumbing Tips Every Homeowner Should Know',
-    excerpt:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.',
+    excerpt: 'Lorem ipsum dolor sit amet...',
     category: 'DIY',
     author: 'Ali Hassan',
     date: 'May 8, 2026',
@@ -55,8 +48,7 @@ const blogPosts = [
   {
     id: 5,
     title: 'How to Choose the Right Plumber for Your Home',
-    excerpt:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.',
+    excerpt: 'Lorem ipsum dolor sit amet...',
     category: 'Guide',
     author: 'John Smith',
     date: 'May 5, 2026',
@@ -66,8 +58,7 @@ const blogPosts = [
   {
     id: 6,
     title: 'Top 5 Common Plumbing Problems and How to Fix Them',
-    excerpt:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud.',
+    excerpt: 'Lorem ipsum dolor sit amet...',
     category: 'Tips',
     author: 'Mike Johnson',
     date: 'May 2, 2026',
@@ -76,136 +67,104 @@ const blogPosts = [
   },
 ];
 
-// Categories for filter
 const categories = ['All', 'Emergency', 'Tips', 'Installation', 'DIY', 'Guide'];
 
 export default function Blog() {
+  const [activeCat, setActiveCat] = useState('All');
+
+  // FILTER LOGIC
+  const filteredPosts =
+    activeCat === 'All'
+      ? blogPosts
+      : blogPosts.filter((p) => p.category === activeCat);
+
   return (
     <div className="min-h-screen bg-white">
-      {/* ── PAGE HERO BANNER ── */}
-      <div className="bg-[#2563EB] py-16 px-4 md:px-10 text-center">
-        <p
-          className="text-[#ffffff] text-xs font-bold tracking-widest
-          uppercase mb-3"
-        >
-          Our Blog
-        </p>
-        <h1
-          className="font-black font-poppins text-white uppercase
-          text-3xl md:text-5xl mb-4"
-        >
-          PLUMBING TIPS & NEWS
-        </h1>
-        <p className="text-[#ffffff] text-sm max-w-xl mx-auto">
-          Expert plumbing advice, DIY tips and industry news to keep your home
-          running smoothly.
-        </p>
+      {/* ── HERO (LOGIN STYLE) ── */}
+      <div className="min-h-[200px] flex items-center justify-center px-4 py-10 bg-white">
+        <div className="w-full max-w-8xl rounded-2xl overflow-hidden shadow-xl flex flex-col md:flex-row">
+          {/* LEFT */}
+          <div className="hidden md:flex w-[40%] bg-gradient-to-br from-[#2563EB] via-[#3B82F6] to-[#60A5FA] relative">
+            <div className="absolute -left-24 top-0 w-64 h-64 rotate-45 bg-white/10" />
+            <div className="absolute -left-20 bottom-0 w-64 h-64 rotate-45 bg-pink-400/20" />
+
+            <div className="relative z-10 flex flex-col justify-center items-center text-center px-6">
+              <p className="text-white/80 text-[11px] font-bold uppercase tracking-widest">
+                Our Blog
+              </p>
+              <h1 className="text-white text-3xl font-black mt-2">
+                PLUMBING BLOG
+              </h1>
+              <p className="text-blue-100 text-[11px] mt-2">
+                Tips & expert guides
+              </p>
+            </div>
+          </div>
+
+          {/* RIGHT */}
+          <div className="flex-1 bg-white p-6 md:p-10 flex flex-col justify-center text-center md:text-left">
+            <h2 className="text-xl md:text-2xl font-black text-[#0F172A]">
+              Latest Articles
+            </h2>
+
+            <p className="text-xs text-[#64748B] mt-1">
+              Learn plumbing tips and DIY fixes
+            </p>
+          </div>
+        </div>
       </div>
 
-      {/* ── MAIN CONTENT ── */}
-      <div className="max-w-7xl mx-auto px-4 md:px-10 py-16">
-        {/* ── CATEGORY FILTER TABS ── */}
-        <div className="flex flex-wrap gap-2 mb-12 justify-center">
+      {/* ── MAIN CONTENT (REDUCED GAP FIX) ── */}
+      <div className="max-w-7xl mx-auto px-4 md:px-10 py-6">
+        {/* CATEGORY FILTER */}
+        <div className="flex flex-wrap gap-2 mb-8 justify-center">
           {categories.map((cat) => (
             <button
               key={cat}
-              className={`px-5 py-2 rounded-full text-xs font-bold
-                tracking-wider uppercase transition
-                ${
-                  cat === 'All'
-                    ? 'bg-[#2563EB] text-white'
-                    : 'bg-[#F1F5F9] text-[#64748B] hover:bg-[#2563EB] hover:text-white'
-                }`}
+              onClick={() => setActiveCat(cat)}
+              className={`px-5 py-2 rounded-full text-xs font-bold transition
+              ${
+                activeCat === cat
+                  ? 'bg-[#2563EB] text-white'
+                  : 'bg-[#F1F5F9] text-[#64748B] hover:bg-[#2563EB] hover:text-white'
+              }`}
             >
               {cat}
             </button>
           ))}
         </div>
 
-        {/* ── FEATURED POST (first post big) ── */}
-        <div
-          className="bg-[#F1F5F9] rounded-3xl overflow-hidden
-          grid md:grid-cols-2 gap-0 mb-12 group cursor-pointer
-          hover:shadow-xl transition"
-        >
-          {/* Image */}
-          <div className="h-64 md:h-auto bg-[#e2e8f0] overflow-hidden">
-            <img
-              src={heroImg}
-              alt={blogPosts[0].title}
-              className="w-full h-full object-cover
-                group-hover:scale-105 transition duration-500"
-            />
-          </div>
-
-          {/* Content */}
-          <div className="p-8 md:p-10 flex flex-col justify-center">
-            {/* Category + Featured badge */}
-            <div className="flex items-center gap-2 mb-4">
-              <span
-                className={`px-3 py-1 rounded-full text-xs font-bold
-                ${blogPosts[0].categoryColor}`}
-              >
-                {blogPosts[0].category}
-              </span>
-              <span
-                className="px-3 py-1 rounded-full text-xs font-bold
-                bg-[#0F172A] text-white"
-              >
-                Featured
-              </span>
+        {/* FEATURED POST */}
+        {filteredPosts.length > 0 && (
+          <div className="bg-[#F1F5F9] rounded-3xl overflow-hidden grid md:grid-cols-2 mb-10 group">
+            <div className="h-64 md:h-auto overflow-hidden">
+              <img
+                src={heroImg}
+                className="w-full h-full object-cover group-hover:scale-105 transition"
+              />
             </div>
 
-            {/* Title */}
-            <h2
-              className="font-black font-poppins text-[#0F172A]
-              text-2xl md:text-3xl leading-tight mb-4
-              group-hover:text-[#2563EB] transition"
-            >
-              {blogPosts[0].title}
-            </h2>
+            <div className="p-8 flex flex-col justify-center">
+              <h2 className="text-2xl font-black text-[#0F172A] mb-3">
+                {filteredPosts[0].title}
+              </h2>
 
-            {/* Excerpt */}
-            <p className="text-[#64748B] text-sm leading-relaxed mb-6">
-              {blogPosts[0].excerpt}
-            </p>
+              <p className="text-sm text-[#64748B] mb-4">
+                {filteredPosts[0].excerpt}
+              </p>
 
-            {/* Meta info */}
-            <div
-              className="flex items-center gap-4 text-xs
-              text-[#64748B] mb-6"
-            >
-              <span className="flex items-center gap-1">
-                <User size={12} /> {blogPosts[0].author}
-              </span>
-              <span className="flex items-center gap-1">
-                <Calendar size={12} /> {blogPosts[0].date}
-              </span>
-              <span className="flex items-center gap-1">
-                <Clock size={12} /> {blogPosts[0].readTime}
-              </span>
+              <Link to={`/blog/${filteredPosts[0].id}`}>
+                <button className="bg-[#2563EB] text-white px-6 py-2 rounded-lg text-xs font-bold">
+                  READ MORE
+                </button>
+              </Link>
             </div>
-
-            {/* Read More */}
-            <Link to={`/blog/${blogPosts[0].id}`}>
-              <button
-                className="flex items-center gap-2 px-6 py-3
-                bg-[#2563EB] text-white rounded-lg font-bold text-xs
-                tracking-wider uppercase hover:bg-blue-700 transition
-                w-fit"
-              >
-                READ MORE <ArrowRight size={14} />
-              </button>
-            </Link>
           </div>
-        </div>
+        )}
 
-        {/* ── BLOG GRID - remaining posts ── */}
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3
-          gap-6"
-        >
-          {blogPosts.slice(1).map((post) => (
+        {/* GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredPosts.slice(1).map((post) => (
             <BlogCard key={post.id} post={post} />
           ))}
         </div>
@@ -214,76 +173,35 @@ export default function Blog() {
   );
 }
 
-// ── Blog Card Component ───────────────────────────────────────────
+// ── CARD ──
 function BlogCard({ post }) {
   return (
-    <div
-      className="bg-white rounded-2xl overflow-hidden shadow-sm
-      border border-gray-100 hover:shadow-xl transition
-      group cursor-pointer"
-    >
-      {/* Image */}
-      <div className="h-48 bg-[#F1F5F9] overflow-hidden">
-        <img
-          src={heroImg}
-          alt={post.title}
-          className="w-full h-full object-cover
-            group-hover:scale-105 transition duration-500"
-        />
+    <div className="bg-white rounded-2xl shadow-sm border hover:shadow-lg transition overflow-hidden">
+      <div className="h-48">
+        <img src={heroImg} className="w-full h-full object-cover" />
       </div>
 
-      {/* Content */}
-      <div className="p-6">
-        {/* Category */}
+      <div className="p-5">
         <span
-          className={`inline-block px-3 py-1 rounded-full
-          text-xs font-bold mb-3 ${post.categoryColor}`}
+          className={`text-xs px-3 py-1 rounded-full ${post.categoryColor}`}
         >
           {post.category}
         </span>
 
-        {/* Title */}
-        <h3
-          className="font-bold font-poppins text-[#0F172A] text-lg
-          leading-tight mb-3 group-hover:text-[#2563EB] transition"
-        >
-          {post.title}
-        </h3>
+        <h3 className="font-bold text-[#0F172A] mt-3">{post.title}</h3>
 
-        {/* Excerpt */}
-        <p
-          className="text-[#64748B] text-sm leading-relaxed mb-4
-          line-clamp-3"
-        >
-          {post.excerpt}
-        </p>
+        <p className="text-xs text-[#64748B] mt-2">{post.excerpt}</p>
 
-        {/* Divider */}
-        <hr className="border-gray-100 mb-4" />
-
-        {/* Meta + Read More */}
-        <div className="flex items-center justify-between">
-          {/* Meta */}
-          <div className="flex items-center gap-3 text-xs text-[#64748B]">
-            <span className="flex items-center gap-1">
-              <Calendar size={11} /> {post.date}
-            </span>
-            <span className="flex items-center gap-1">
-              <Clock size={11} /> {post.readTime}
-            </span>
-          </div>
-
-          {/* Arrow */}
-          <Link to={`/blog/${post.id}`}>
-            <div
-              className="w-8 h-8 bg-[#F1F5F9] rounded-full
-              flex items-center justify-center text-[#2563EB]
-              hover:bg-[#2563EB] hover:text-white transition"
-            >
-              <ArrowRight size={14} />
-            </div>
-          </Link>
+        <div className="flex justify-between mt-4 text-xs text-[#64748B]">
+          <span>{post.date}</span>
+          <span>{post.readTime}</span>
         </div>
+
+        <Link to={`/blog/${post.id}`}>
+          <div className="mt-4 text-[#2563EB] font-bold text-xs">
+            Read More →
+          </div>
+        </Link>
       </div>
     </div>
   );

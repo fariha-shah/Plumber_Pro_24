@@ -1,9 +1,8 @@
-// Login Page - Minimal cute design
-// Author: Wajeeha Habib | TechNexus Internship
-
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, Wrench, ArrowRight } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Mail, Lock, Eye, EyeOff, Wrench } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import logo from '../assets/logo.png'; // ✅ YOUR LOGO IMAGE
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -12,211 +11,193 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+  const { login, adminLogin } = useAuth();
+
   const validate = () => {
     const e = {};
-    if (!email.trim()) e.email = 'Please enter your email';
-    if (!password.trim()) e.password = 'Please enter your password';
+    if (!email.trim()) e.email = 'Enter email';
+    if (!password.trim()) e.password = 'Enter password';
     setErrors(e);
     return Object.keys(e).length === 0;
   };
-
   const handleSubmit = async () => {
     if (!validate()) return;
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1500));
+
+    await new Promise((r) => setTimeout(r, 1200));
+
+    // ── Check 1: Admin login ──
+    const isAdmin = adminLogin(email, password);
+    if (isAdmin) {
+      setLoading(false);
+      navigate('/admin');
+      return;
+    }
+
+    // ── Check 2: Registered client login ──
+    const registered = localStorage.getItem('plumber_registered');
+    const userData = registered ? JSON.parse(registered) : null;
+
+    if (!userData || userData.email !== email) {
+      setErrors({ email: 'Invalid email or not registered' });
+      setLoading(false);
+      return;
+    }
+
+    // ── Client login ──
+    login({
+      name: userData.name,
+      email: userData.email,
+      phone: userData.phone,
+      role: 'client',
+    });
+
+    localStorage.removeItem('plumber_registered');
     setLoading(false);
-    alert('Login successful!');
+    navigate('/dashboard');
   };
 
   return (
-    <div
-      className="min-h-screen bg-white flex items-center
-      justify-center px-4 py-12 relative overflow-hidden"
-    >
-      {/* ── Background blobs ── */}
-      <div
-        className="absolute -top-32 -left-32 w-96 h-96
-        rounded-full blur-3xl opacity-20"
-        style={{ background: '#EC4899' }}
-      />
-      <div
-        className="absolute -bottom-32 -right-32 w-96 h-96
-        rounded-full blur-3xl opacity-20"
-        style={{ background: '#2563EB' }}
-      />
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2
-        -translate-y-1/2 w-72 h-72 rounded-full blur-3xl opacity-10"
-        style={{ background: '#818cf8' }}
-      />
+    <div className="min-h-screen bg-white flex items-center justify-center p-2">
+      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-lg overflow-hidden flex min-h-[500px]">
+        {/* LEFT SIDE */}
+        <div className="hidden md:flex w-[38%] relative overflow-hidden bg-gradient-to-br from-[#2563EB] via-[#3B82F6] to-[#60A5FA]">
+          <div className="absolute -left-28 top-0 w-72 h-72 rotate-45 bg-white/10" />
+          <div className="absolute -left-20 top-24 w-72 h-72 rotate-45 bg-white/10" />
+          <div className="absolute -left-16 bottom-0 w-64 h-64 rotate-45 bg-pink-400/20" />
 
-      {/* ── Card ── */}
-      <div className="relative z-10 w-full max-w-md">
-        {/* Logo + Title */}
-        <div className="text-center mb-8">
-          <div
-            className="w-16 h-16 bg-[#2563EB] rounded-2xl
-            flex items-center justify-center mx-auto mb-4
-            shadow-lg shadow-blue-200"
-          >
-            <Wrench size={28} className="text-white" />
+          <div className="relative z-10 flex flex-col items-center justify-center w-full px-6 text-center">
+            <div className="bg-white text-[#2563EB] px-5 py-1.5 rounded-r-full font-bold text-[11px] shadow">
+              LOGIN
+            </div>
+
+            <h2 className="text-white text-2xl font-black mt-4">Plumber Pro</h2>
+
+            <p className="text-blue-100 mt-1 text-[11px] leading-snug px-2">
+              Login and manage bookings easily.
+            </p>
           </div>
-          <h1
-            className="font-black font-poppins text-[#0F172A]
-            text-3xl mb-1"
-          >
-            Welcome Back!
-          </h1>
-          <p className="text-[#64748B] text-sm">
-            Login to manage your bookings
-          </p>
         </div>
 
-        {/* Form Card */}
-        <div
-          className="bg-white rounded-3xl shadow-xl shadow-blue-100/50
-          border border-gray-100 p-8"
-        >
-          <div className="space-y-5">
-            {/* Email */}
-            <div>
-              <label
-                className="block text-sm font-semibold
-                text-[#64748B] mb-2"
-              >
-                Email Address
-              </label>
+        {/* RIGHT SIDE */}
+        <div className="flex-1 flex items-center justify-center px-5 py-5">
+          <div className="w-full max-w-sm">
+            {/* LOGO IMAGE */}
+            <div className="text-center mb-5">
+              <img
+                src={logo}
+                alt="logo"
+                className="w-20 h-20 mx-auto object-contain drop-shadow-md"
+              />
+
+              <h1 className="text-xl font-black text-[#0F172A] mt-2">LOGIN</h1>
+
+              <p className="text-[11px] text-[#64748B]">Access your account</p>
+            </div>
+
+            {/* EMAIL */}
+            <div className="mb-4">
               <div className="relative">
                 <Mail
                   size={16}
-                  className="absolute left-4 top-1/2 -translate-y-1/2
-                    text-[#64748B]"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 text-[#64748B]"
                 />
+
                 <input
                   type="email"
-                  placeholder="john@email.com"
+                  placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={`w-full pl-11 pr-4 py-3 border-2 rounded-xl
-                    text-sm text-[#0F172A] focus:outline-none
-                    transition bg-[#F8FAFC]
-                    ${
-                      errors.email
-                        ? 'border-pink-400 focus:border-pink-500'
-                        : 'border-gray-100 focus:border-[#2563EB]'
-                    }`}
+                  className="w-full pl-7 py-2 border-b border-gray-300 focus:border-[#2563EB] outline-none text-xs"
                 />
               </div>
+
               {errors.email && (
-                <p className="text-pink-500 text-xs mt-1 flex items-center gap-1">
-                  {errors.email}
-                </p>
+                <p className="text-pink-500 text-[10px] mt-1">{errors.email}</p>
               )}
             </div>
 
-            {/* Password */}
-            <div>
-              <label
-                className="block text-sm font-semibold
-                text-[#64748B] mb-2"
-              >
-                Password
-              </label>
+            {/* PASSWORD */}
+            <div className="mb-3">
               <div className="relative">
                 <Lock
                   size={16}
-                  className="absolute left-4 top-1/2 -translate-y-1/2
-                    text-[#64748B]"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 text-[#64748B]"
                 />
+
                 <input
                   type={showPass ? 'text' : 'password'}
-                  placeholder="Enter your password"
+                  placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className={`w-full pl-11 pr-11 py-3 border-2 rounded-xl
-                    text-sm text-[#0F172A] focus:outline-none
-                    transition bg-[#F8FAFC]
-                    ${
-                      errors.password
-                        ? 'border-pink-400 focus:border-pink-500'
-                        : 'border-gray-100 focus:border-[#2563EB]'
-                    }`}
+                  className="w-full pl-7 pr-8 py-2 border-b border-gray-300 focus:border-[#2563EB] outline-none text-xs"
                 />
+
                 <button
                   type="button"
                   onClick={() => setShowPass(!showPass)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2
-                    text-[#64748B] hover:text-[#2563EB] transition"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 text-[#64748B]"
                 >
                   {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
+
               {errors.password && (
-                <p className="text-pink-500 text-xs mt-1">{errors.password}</p>
+                <p className="text-pink-500 text-[10px] mt-1">
+                  {errors.password}
+                </p>
               )}
             </div>
 
-            {/* Forgot */}
-            <div className="flex justify-end">
+            {/* FORGOT */}
+            <div className="flex justify-end mb-4">
               <a
                 href="#"
-                className="text-xs text-[#2563EB] hover:text-pink-500
-                  font-semibold transition"
+                className="text-[10px] text-pink-500 hover:text-[#2563EB]"
               >
                 Forgot Password?
               </a>
             </div>
 
-            {/* Login Button */}
-            <button
-              onClick={handleSubmit}
-              disabled={loading}
-              className={`w-full py-3.5 bg-[#2563EB] text-white
-                rounded-xl font-bold text-sm tracking-wider uppercase
-                hover:bg-blue-700 transition shadow-lg shadow-blue-200
-                flex items-center justify-center gap-2
-                ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
-            >
-              {loading ? (
-                'Logging in...'
-              ) : (
-                <>
-                  <span>LOGIN</span> <ArrowRight size={16} />
-                </>
-              )}
-            </button>
-
-            {/* Divider */}
-            <div className="flex items-center gap-3">
-              <hr className="flex-1 border-gray-100" />
-              <span className="text-xs text-[#64748B]">OR</span>
-              <hr className="flex-1 border-gray-100" />
+            {/* BUTTON */}
+            <div className="flex justify-center mb-5">
+              <button
+                onClick={handleSubmit}
+                disabled={loading}
+                className="px-6 py-2 rounded-full bg-gradient-to-r from-[#2563EB] to-pink-500 text-white text-[11px] font-bold tracking-wide hover:scale-105 transition"
+              >
+                {loading ? 'LOGGING IN...' : 'LOGIN'}
+              </button>
             </div>
 
-            {/* Emergency */}
-            <a
-              href="tel:+18005551234"
-              className="w-full py-3 bg-gradient-to-r from-red-500
-                to-red-600 text-white rounded-xl font-bold text-sm
-                tracking-wider uppercase hover:from-red-600
-                hover:to-red-700 transition flex items-center
-                justify-center gap-2 shadow-lg shadow-pink-200"
-            >
-              🚨 Emergency Call
-            </a>
-          </div>
+            {/* SOCIAL */}
+            <div className="border-t pt-4">
+              <p className="text-center text-[10px] text-gray-500 mb-2">
+                Or Login With
+              </p>
 
-          {/* Register Link */}
-          <p className="text-center text-sm text-[#64748B] mt-6">
-            Don't have an account?{' '}
-            <Link
-              to="/register"
-              className="text-[#2563EB] font-bold hover:text-pink-500
-                transition"
-            >
-              Register Now
-            </Link>
-          </p>
+              <div className="flex justify-center gap-5 text-xs">
+                <button className="text-gray-700 hover:text-[#2563EB]">
+                  Google
+                </button>
+                <button className="text-gray-700 hover:text-[#2563EB]">
+                  Facebook
+                </button>
+              </div>
+            </div>
+
+            {/* REGISTER */}
+            <p className="text-center text-[11px] text-gray-500 mt-4">
+              Don't have account?{' '}
+              <Link
+                to="/register"
+                className="text-[#2563EB] font-semibold hover:text-pink-500"
+              >
+                Register
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

@@ -63,7 +63,7 @@ export default function About() {
 
           {/* Buttons */}
           <div className="flex flex-wrap gap-4">
-            <Link to="/contact">
+            <Link to="/booking">
               <button
                 className="px-8 py-3 bg-[#2563EB] text-white
                 rounded-lg font-bold text-sm tracking-wider uppercase

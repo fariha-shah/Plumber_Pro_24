@@ -1,7 +1,5 @@
-// Main Booking Page
-// Combines all components into one booking flow
-// TODO: Replace fake API call with POST /api/bookings when backend ready
-// Author: Taimoor Amin | TechNexus Internship | 25 May 2026
+// Main Booking Page - Professional UI Revamp
+// Author: TechNexus Internship
 
 import { useState } from 'react';
 import {
@@ -21,7 +19,6 @@ import SuccessScreen from '../components/SuccessScreen';
 import { SERVICES } from '../data/bookingData';
 
 export default function BookingPage() {
-  // Form field states
   const [selectedService, setSelectedService] = useState(null);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
@@ -30,39 +27,32 @@ export default function BookingPage() {
   const [phone, setPhone] = useState('');
   const [notes, setNotes] = useState('');
 
-  // UI states
-  const [step, setStep] = useState(1); // 1=form 2=success
+  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  // Today's date - prevents picking past dates
   const today = new Date().toISOString().split('T')[0];
 
-  // Validate all required fields
   const validate = () => {
     const e = {};
-    if (!name.trim()) e.name = 'Please enter your name';
-    if (!phone.trim()) e.phone = 'Please enter your phone number';
-    if (!selectedService) e.service = 'Please select a service type';
-    if (!selectedDate) e.date = 'Please select a date';
-    if (!selectedTime) e.time = 'Please select a time slot';
-    if (!address.trim()) e.address = 'Please enter your address';
+    if (!name.trim()) e.name = 'Required';
+    if (!phone.trim()) e.phone = 'Required';
+    if (!selectedService) e.service = 'Select service';
+    if (!selectedDate) e.date = 'Select date';
+    if (!selectedTime) e.time = 'Select time';
+    if (!address.trim()) e.address = 'Required';
     setErrors(e);
     return Object.keys(e).length === 0;
   };
 
-  // Handle form submit with fake API simulation
   const handleSubmit = async () => {
     if (!validate()) return;
     setLoading(true);
-    // TODO: Replace with real API call:
-    // await fetch('/api/bookings', { method: 'POST', ... })
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise((r) => setTimeout(r, 1200));
     setLoading(false);
     setStep(2);
   };
 
-  // Reset all form fields
   const handleReset = () => {
     setStep(1);
     setSelectedService(null);
@@ -75,7 +65,6 @@ export default function BookingPage() {
     setErrors({});
   };
 
-  // Show success screen after booking
   if (step === 2) {
     return (
       <SuccessScreen
@@ -91,193 +80,140 @@ export default function BookingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
+    <div className="min-h-screen bg-[#F8FAFC]">
+      {/* HEADER (Modern Blue Hero Style) */}
+      <div className="bg-gradient-to-r from-[#2563EB] via-[#3B82F6] to-[#60A5FA] py-10 px-4 text-center relative overflow-hidden">
+        {/* decorative shapes */}
+        <div className="absolute -left-20 top-0 w-72 h-72 bg-white/10 rotate-45" />
+        <div className="absolute -right-20 bottom-0 w-72 h-72 bg-white/10 rotate-45" />
 
-      {/* Page Title */}
-      <div className="text-center py-8 px-4">
-        <h1 className="text-2xl md:text-3xl font-bold font-poppins text-[#0F172A] mb-2">
-          Book a Plumber
-        </h1>
-        <p className="text-[#64748B]">
-          Available 24/7 · Fast Response · Professional Service
-        </p>
+        <div className="relative z-10">
+          <p className="text-white/80 text-[11px] font-semibold tracking-widest uppercase">
+            24/7 Fast Booking System
+          </p>
+
+          <h1 className="text-white text-3xl md:text-4xl font-black mt-2">
+            BOOK A PLUMBER
+          </h1>
+
+          <p className="text-blue-100 text-xs mt-2 max-w-md mx-auto leading-relaxed">
+            Quick, reliable and professional plumbing service at your doorstep
+          </p>
+        </div>
       </div>
 
-      {/* Main Form Card */}
-      <div className="max-w-2xl mx-auto px-4 pb-10">
-        <div className="bg-[#F1F5F9] rounded-2xl shadow-sm p-6 md:p-8">
-          {/* ===== SECTION 1: Personal Info ===== */}
-          <SectionTitle icon={<User size={18} />} title="Your Details" />
+      {/* CARD */}
+      <div className="max-w-2xl mx-auto px-4 pb-12">
+        <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-6 md:p-7">
+          {/* SECTION 1 */}
+          <SectionTitle icon={<User size={16} />} title="Personal Info" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            {/* Name */}
-            <div>
-              <label className="text-sm font-semibold text-[#64748B] block mb-2">
-                Full Name *
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. John Smith"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className={`w-full border rounded-xl px-4 py-3 text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]
-                  ${errors.name ? 'border-[#DC2626]' : 'border-gray-200'}`}
-              />
-              {errors.name && (
-                <p className="text-[#DC2626] text-xs mt-1">{errors.name}</p>
-              )}
-            </div>
-
-            {/* Phone */}
-            <div>
-              <label className="text-sm font-semibold text-[#64748B] block mb-2">
-                Phone Number *
-              </label>
-              <input
-                type="tel"
-                placeholder="e.g. +1 555 000 1234"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className={`w-full border rounded-xl px-4 py-3 text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]
-                  ${errors.phone ? 'border-[#DC2626]' : 'border-gray-200'}`}
-              />
-              {errors.phone && (
-                <p className="text-[#DC2626] text-xs mt-1">{errors.phone}</p>
-              )}
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
+            <Input
+              label="Full Name"
+              value={name}
+              onChange={setName}
+              placeholder="John Smith"
+              error={errors.name}
+            />
+            <Input
+              label="Phone"
+              value={phone}
+              onChange={setPhone}
+              placeholder="+1 555 000"
+              error={errors.phone}
+            />
           </div>
 
           <Divider />
 
-          {/* ===== SECTION 2: Service Type ===== */}
-          <SectionTitle
-            icon={<FileText size={18} />}
-            title="Select Service Type *"
-          />
-          {errors.service && (
-            <p className="text-[#DC2626] text-xs mb-3">{errors.service}</p>
-          )}
+          {/* SECTION 2 */}
+          <SectionTitle icon={<FileText size={16} />} title="Service Type" />
+          {errors.service && <ErrorText text={errors.service} />}
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
-            {SERVICES.map((service) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
+            {SERVICES.map((s) => (
               <ServiceCard
-                key={service.id}
-                service={service}
-                isSelected={selectedService === service.id}
-                onSelect={() => setSelectedService(service.id)}
+                key={s.id}
+                service={s}
+                isSelected={selectedService === s.id}
+                onSelect={() => setSelectedService(s.id)}
               />
             ))}
           </div>
 
           <Divider />
 
-          {/* ===== SECTION 3: Date & Time ===== */}
-          <SectionTitle
-            icon={<CalendarCheck size={18} />}
-            title="Choose Date & Time"
+          {/* SECTION 3 */}
+          <SectionTitle icon={<CalendarCheck size={16} />} title="Schedule" />
+
+          <Input
+            type="date"
+            label="Date"
+            value={selectedDate}
+            onChange={setSelectedDate}
+            min={today}
+            error={errors.date}
           />
 
-          {/* Date Picker */}
-          <div className="mb-4">
-            <label className="text-sm font-semibold text-[#64748B] block mb-2">
-              Preferred Date *
-            </label>
-            <input
-              type="date"
-              min={today}
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className={`w-full border rounded-xl px-4 py-3 text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]
-                ${errors.date ? 'border-[#DC2626]' : 'border-gray-200'}`}
-            />
-            {errors.date && (
-              <p className="text-[#DC2626] text-xs mt-1">{errors.date}</p>
-            )}
-          </div>
-
-          {/* Time Slot Picker */}
-          <div className="mb-2">
+          <div className="mt-3">
             <TimeSlotPicker
               selected={selectedTime}
               onSelect={setSelectedTime}
             />
-            {errors.time && (
-              <p className="text-[#DC2626] text-xs mt-1">{errors.time}</p>
-            )}
+            {errors.time && <ErrorText text={errors.time} />}
           </div>
 
-          <div className="mb-6" />
           <Divider />
 
-          {/* ===== SECTION 4: Address ===== */}
-          <SectionTitle icon={<MapPin size={18} />} title="Your Address" />
+          {/* SECTION 4 */}
+          <SectionTitle icon={<MapPin size={16} />} title="Address" />
 
-          {/* Address Input */}
-          <div className="mb-4">
-            <label className="text-sm font-semibold text-[#64748B] block mb-2">
-              Full Address *
-            </label>
-            <input
-              type="text"
-              placeholder="e.g. 123 Main Street, New York, NY 10001"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              className={`w-full border rounded-xl px-4 py-3 text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB]
-                ${errors.address ? 'border-[#DC2626]' : 'border-gray-200'}`}
-            />
-            {errors.address && (
-              <p className="text-[#DC2626] text-xs mt-1">{errors.address}</p>
-            )}
-          </div>
+          <Input
+            label="Full Address"
+            value={address}
+            onChange={setAddress}
+            placeholder="Street, City"
+            error={errors.address}
+          />
 
-          {/* Notes */}
-          <div className="mb-6">
-            <label className="text-sm font-semibold text-[#64748B] block mb-2">
-              Additional Notes (optional)
-            </label>
-            <textarea
-              rows={3}
-              placeholder="Describe the problem, access instructions, etc."
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-[#0F172A] focus:outline-none focus:ring-2 focus:ring-[#2563EB] resize-none"
-            />
-          </div>
+          <textarea
+            className="w-full mt-3 border border-gray-200 rounded-xl px-3 py-2 text-xs text-[#0F172A] focus:outline-none focus:ring-1 focus:ring-[#2563EB]"
+            rows={3}
+            placeholder="Notes (optional)"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+          />
 
-          {/* ===== LIVE BOOKING SUMMARY ===== */}
+          {/* SUMMARY */}
           {selectedService && (
-            <BookingSummary
-              selectedService={selectedService}
-              selectedDate={selectedDate}
-              selectedTime={selectedTime}
-              address={address}
-            />
+            <div className="mt-4">
+              <BookingSummary
+                selectedService={selectedService}
+                selectedDate={selectedDate}
+                selectedTime={selectedTime}
+                address={address}
+              />
+            </div>
           )}
 
-          {/* ===== SUBMIT BUTTON ===== */}
+          {/* BUTTON */}
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className={`w-full py-4 bg-[#2563EB] text-white rounded-xl font-bold font-poppins text-base hover:bg-blue-700 transition mb-3 flex items-center justify-center gap-2
-              ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+            className="w-full mt-5 py-3 rounded-xl bg-[#2563EB] text-white text-sm font-medium hover:bg-blue-700 transition flex items-center justify-center gap-2"
           >
-            {loading ? (
-              <>
-                <Loader size={18} className="animate-spin" /> Booking...
-              </>
-            ) : (
-              '🔧 Confirm Booking'
-            )}
+            {loading ? <Loader size={16} className="animate-spin" /> : null}
+            Confirm Booking
           </button>
 
-          {/* Emergency Call Button */}
+          {/* EMERGENCY */}
           <a
             href="tel:+18005551234"
-            className="w-full py-3 bg-[#DC2626] text-white rounded-xl font-semibold text-sm hover:bg-red-700 transition flex items-center justify-center gap-2 animate-pulse"
+            className="w-full mt-3 py-2 rounded-xl bg-red-500 text-white text-xs font-medium flex items-center justify-center gap-2 hover:bg-red-600 transition"
           >
-            <AlertTriangle size={16} />
-            Emergency? Call Now: +1 800 555 1234
+            <AlertTriangle size={14} />
+            Emergency Call
           </a>
         </div>
       </div>
@@ -285,19 +221,35 @@ export default function BookingPage() {
   );
 }
 
-// ── Helper Components ─────────────────────────────────────────────────────────
+/* ---------------- HELPERS ---------------- */
 
-// Section title with icon
 function SectionTitle({ icon, title }) {
   return (
-    <h2 className="flex items-center gap-2 text-lg font-bold font-poppins text-[#0F172A] mb-4">
+    <h2 className="flex items-center gap-2 text-sm font-semibold text-[#0F172A] mb-3">
       <span className="text-[#2563EB]">{icon}</span>
       {title}
     </h2>
   );
 }
 
-// Horizontal divider
 function Divider() {
-  return <hr className="border-none border-t border-gray-100 my-6" />;
+  return <div className="my-5 border-t border-gray-100" />;
+}
+
+function Input({ label, error, ...props }) {
+  return (
+    <div>
+      {label && <label className="text-xs text-[#64748B]">{label}</label>}
+      <input
+        {...props}
+        className={`w-full mt-1 border rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#2563EB]
+        ${error ? 'border-red-400' : 'border-gray-200'}`}
+      />
+      {error && <p className="text-red-500 text-[10px] mt-1">{error}</p>}
+    </div>
+  );
+}
+
+function ErrorText({ text }) {
+  return <p className="text-red-500 text-[10px] mt-2">{text}</p>;
 }
