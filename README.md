@@ -1,16 +1,78 @@
-# React + Vite
+# 🔧 Plumber Pro
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-frontend client dashboard and marketing website for a plumbing services platform, built with React, Vite, Tailwind CSS, and Redux Toolkit. Includes customer-facing pages (home, booking, contact) and role-based dashboards for clients and admins.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Customer-facing site** — home page, service booking, blog, and contact page
+- **Contact form with real email delivery** — integrated with EmailJS, includes client-side validation
+- **Authentication flow** — login/register with client and admin roles
+- **Client dashboard** — view bookings, invoices, and support tickets, manage profile
+- **Admin dashboard** — manage users, assign bookings, oversee plumber accounts
+- **Responsive design** — fully adapted for mobile, tablet, and desktop
+- **State management** — Redux Toolkit for global app state
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend:** React 19, Vite
+- **Styling:** Tailwind CSS
+- **State Management:** Redux Toolkit
+- **Routing:** React Router DOM
+- **Icons:** Lucide React
+- **Animations:** Framer Motion
+- **Email Service:** EmailJS
 
-## Expanding the ESLint configuration
+## 📦 Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+
+- Node.js (v18 or higher recommended)
+- npm
+
+### Installation
+
+```bash
+git clone https://github.com/fariha-shah/Plumber-Pro
+cd plumber-pro
+npm install
+
+```
+
+### Environment Variables
+
+Create a `.env` file in the project root with your EmailJS credentials:
+
+```
+VITE_EMAILJS_SERVICE_ID=your_service_id
+VITE_EMAILJS_TEMPLATE_ID=your_template_id
+VITE_EMAILJS_PUBLIC_KEY=your_public_key
+```
+
+You can get these by creating a free account at [EmailJS](https://www.emailjs.com/).
+
+### Run locally
+
+```bash
+npm run dev
+```
+
+### Build for production
+
+```bash
+npm run build
+```
+
+## 👥 Team & Contributions
+
+This was a 4-person frontend internship project. Each developer initially built their own version of different sections of the application.
+
+**My role:** I merged all individual frontend implementations into a single, working, production-ready codebase — resolving conflicting logic, fixing broken components, and debugging integration issues across the merged code. I also implemented the real EmailJS contact form integration (with validation), fixed navigation/logo linking, and prepared the project for deployment.
+
+## 📝 Notes
+
+- Authentication is currently demo-only (client-side, using `localStorage`) — not connected to a real backend/database.
+- Admin login uses fixed demo credentials for testing purposes.
+
+## 📄 License
+
+This project was built for educational/portfolio purposes as part of a frontend development internship.
