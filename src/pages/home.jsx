@@ -3,10 +3,10 @@
 
 import Hero from '../components/Hero';
 import HireUs from '../components/HireUs';
-import Services from '../components/Services';
+import Services from '../components/services';
 import About from '../components/about';
 import Projects from '../components/Projects';
-import Cta from '../components/Cta';
+import Cta from '../components/cta';
 
 export default function Home() {
   return (
