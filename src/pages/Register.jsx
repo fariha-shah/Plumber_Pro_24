@@ -143,11 +143,15 @@ export default function Register() {
             {/* HEADER */}
             <div className="text-center mb-5">
               <div className="text-center mb-5">
-                <img
-                  src={logo}
-                  alt="logo"
-                  className="w-20 h-20 mx-auto object-contain drop-shadow-md"
-                />
+                <div className="text-center mb-5">
+                  <Link to="/">
+                    <img
+                      src={logo}
+                      alt="logo"
+                      className="w-20 h-20 mx-auto object-contain drop-shadow-md cursor-pointer hover:opacity-80 transition"
+                    />
+                  </Link>
+                </div>
               </div>
 
               <h1 className="text-xl font-black text-[#0F172A] mt-3">

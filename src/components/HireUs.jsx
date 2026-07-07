@@ -1,6 +1,4 @@
 // HireUs Bar - Light gray outer, white inner box
-// Author: Wajeeha Habib | TechNexus Internship
-
 export default function HireUs() {
   return (
     <section className="bg-[#F1F5F9] py-6 px-4 md:px-10">

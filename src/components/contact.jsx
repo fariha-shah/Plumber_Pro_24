@@ -1,7 +1,9 @@
 // Contact Page - Exact design match
 // Author: Wajeeha Habib | TechNexus Internship
+// EmailJS integration, validation & debugging: Fareeha Shah
 
 import { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import {
   MapPin,
   Phone,
@@ -21,18 +23,55 @@ export default function Contact() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
+  const validateForm = () => {
+    if (!form.name.trim()) return 'Please enter your full name.';
+    if (!form.email.trim()) return 'Please enter your email address.';
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(form.email))
+      return 'Please enter a valid email address.';
+    if (!form.message.trim()) return 'Please enter your message.';
+    return '';
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
     setLoading(true);
-    // TODO: Replace with real emailjs or API call
-    await new Promise((r) => setTimeout(r, 1500));
-    setLoading(false);
-    setSubmitted(true);
+
+    try {
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        {
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          message: form.message,
+        },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+      setSubmitted(true);
+    } catch (err) {
+      console.error('EmailJS error:', err);
+      setError(
+        'Something went wrong sending your message. Please try again or call us directly.'
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -68,7 +107,7 @@ export default function Contact() {
             </h2>
 
             <p className="text-xs text-[#64748B] mt-1">
-              Plumbing emergency or quotation — we’re one click away.
+              Plumbing emergency or quotation — we're one click away.
             </p>
 
             {/* Buttons */}
@@ -189,6 +228,17 @@ export default function Contact() {
               </div>
             ) : (
               <div className="space-y-4">
+                {/* Error Message */}
+                {error && (
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center gap-2">
+                    <AlertTriangle
+                      size={18}
+                      className="text-red-500 flex-shrink-0"
+                    />
+                    <p className="text-red-600 text-sm">{error}</p>
+                  </div>
+                )}
+
                 {/* Name */}
                 <div>
                   <label

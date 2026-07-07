@@ -1,5 +1,5 @@
 // Home Page - combines all sections
-// Author: Wajeeha Habib | TechNexus Internship
+// Author: Wajeeha Habib |& Fareeha TechNexus Internship
 
 import Hero from '../components/Hero';
 import HireUs from '../components/HireUs';

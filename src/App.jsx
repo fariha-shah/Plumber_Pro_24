@@ -6,17 +6,17 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 
 // Layouts
-import MainLayout from './layouts/MainLayout';
+import MainLayout from './layouts/Mainlayout';
 
 // Public Pages
-import Home from './pages/Home';
+import Home from './pages/home';
 import Blog from './pages/Blog';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import BookingPage from './pages/BookingPage';
 
 // Components as pages
-import Services from './components/Services';
+import Services from './components/services';
 import About from './components/about';
 import Contact from './components/contact';
 
